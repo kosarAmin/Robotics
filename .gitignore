@@ -1,32 +1,30 @@
-# Prerequisites
-*.d
+# Robotics
+clear all
+clc
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+syms   x1 y1 a1 a2 
+ x0= 0; y0=0;
+ l1=5; l2=2; l3=1;
 
-# Precompiled Headers
-*.gch
-*.pch
+teta1= (0:2*pi/18:2*pi);
+teta2=(0:2*pi/18:2*pi);
+teta3= (0:2*pi/18:2*pi);
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
 
-# Fortran module files
-*.mod
-*.smod
+for i=1:length(teta1)
+ x1(i)=l1*cos(teta1(i))+x0;
+ y1(i)=l1*sin(teta1(i))+y0;
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+for j=1:length(teta2)
+      x2(j)=l2*cos(teta2(j))+x1(i);
+      y2(j)=l2*sin(teta2(j))+y1(i);
+for k=1:length(teta3)
+      x3(k)=l3*cos(teta3(k))+x2(j);
+      y3(k)=l3*sin(teta3(k))+y2(j);
 
-# Executables
-*.exe
-*.out
-*.app
+ plot([x0,x1(i)],[y0,y1(i)],[x1(i),x2(j)],[y1(i),y2(j)],[x2(j),x3(k)],[y2(j),y3(k)])
+ axis([-10,10,-10,10])
+ pause(0.01)
+
+end
+end
