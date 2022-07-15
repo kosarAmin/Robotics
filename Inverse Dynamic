@@ -1,0 +1,37 @@
+%% Load data
+train=readtable('train%1.xlsx',"TextType","string");
+train=train(:,1:4);
+train=table2array(train);
+X=train(:,1:2);
+Y=train(:,4);
+
+
+%% indicate specific portion for training data and test data
+
+c = cvpartition(size(train,1),"Holdout",0.20);
+trainingIdx = training(c); 
+testIdx = test(c);
+XTrain = X(trainingIdx,:);
+YTrain = Y(trainingIdx,:);
+XTest = X(testIdx,:);
+YTest = Y(testIdx,:);
+
+%% regression network 
+
+Mdl = fitrnet(XTrain,YTrain,"Standardize",true, ...
+    "LayerSizes",[30 10])
+Mdl.LayerWeights{1}
+Mdl.LayerBiases{1}
+size(Mdl.LayerWeights{end})
+size(Mdl.LayerBiases{end})
+
+testMSE = loss(Mdl,XTest,YTest)
+
+figure;
+testPredictions = predict(Mdl,XTest);
+plot(YTest,testPredictions,".")
+hold on
+plot(YTest,YTest)
+hold off
+xlabel("True MPG")
+ylabel("Predicted MPG")
